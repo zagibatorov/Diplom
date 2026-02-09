@@ -1976,8 +1976,7 @@ body{
         align-items: center;
         margin: 0;
         color: white;
-        font-size: 16px;
-        line-height: 15px;
+        font-size: 20px;
     }
     
     .blackFilter{
@@ -2235,8 +2234,6 @@ body{
     }
     
     .imgPart{
-        width: 100%;
-        height: 100px;
         filter: grayscale(100%);
         transition: filter 0.5s ease;
     }
@@ -2246,7 +2243,8 @@ body{
     }
     
     .imgPart img{
-        height: 100%;
+        width: 5em;
+        height: 9em;
         transition: transform 0.5s ease;
     }
     
@@ -2266,9 +2264,9 @@ body{
     
     .prev, .next{
         background-color: #D9D9D9;
-        width: 55px;
-        height: 55px;
-        border: 3px solid white;
+        width: 80px;
+        height: 80px;
+        border: 4px solid white;
         border-radius: 15px;
         display: flex;
         justify-content: center;
@@ -2290,8 +2288,8 @@ body{
     }
     
     .slideBtnElem{
-        width: 27px;
-        height: 6px;
+        width: 50px;
+        height: 8px;
         background-color: white;
         position: absolute;
     }
@@ -2302,27 +2300,27 @@ body{
     
     .prev .slideBtnElem:nth-child(1){
         transform: rotate(133.3deg);
-        top: 18px;
+        top: 21px;
     }
     
     .prev .slideBtnElem:nth-child(2){
         transform: rotate(-136.86deg);
-        top: 33px;
+        top: 52px;
     }
     
     .next .slideBtnElem:nth-child(1){
         transform: rotate(-133.3deg);
-        top: 18px;
+        top: 21px;
     }
     
     .next .slideBtnElem:nth-child(2){
         transform: rotate(136.86deg);
-        top: 33px;
+        top: 52px;
     }
     
     .char{
         display: none;
-        width: 325px;
+        width: 500px;
         border-radius: 20px;
         opacity: 0;
         transition: all 1s ease;
@@ -2376,16 +2374,11 @@ body{
         align-items: center;
         position: relative;
         opacity: 1;
-    }
-    
-    .charImg{
-        position: absolute;
-        top: 17px;
+        padding: 20px;
     }
 
     .charImg img{
-        width: 14em;
-        height: 17em;
+        width: 23em;
     }
     
     .story{
@@ -2396,10 +2389,8 @@ body{
     }
     
     .charInfo{
-        width: 280px;
         background-color: white;
         border-radius: 20px;
-        margin: 289px 0 15px;
     }
 
     .charText{
@@ -2413,7 +2404,7 @@ body{
         align-items: center;
         text-align: center;
         margin: 0;
-        font-size: 20px;
+        font-size: 25px;
     }
     
     .charName{
@@ -2429,7 +2420,7 @@ body{
     
     .charName p{
         text-align: center;
-        font-size: 20px;
+        font-size: 25px;
         margin: 0;
     }
 
@@ -2791,10 +2782,6 @@ body{
         border-radius: 25px;
     }
 
-    .left > .abbreviation{
-        width: 150px;
-    }
-
     .left-text{
         background-color:#6A9EFF;
         border-radius: 50px;
@@ -2805,12 +2792,8 @@ body{
 
     .left-text p{
         text-align: center;
-        font-size: 30px;
+        font-size: 25px;
         color: white;
-    }
-
-    .right > img{
-        width: 700px;
     }
     
     .bottomAboutImg{
@@ -2842,14 +2825,10 @@ body{
         font-size: 16px;
     }
 
-    .card{
-        margin: 77px 0;
-    }
-    
     .prev, .next{
         background-color: #D9D9D9;
-        width: 90px;
-        height: 70px;
+        width: 75px;
+        height: 75px;
         border: 5px solid white;
         border-radius: 25px;
         display: flex;
@@ -2858,15 +2837,15 @@ body{
         position: relative;
         cursor: pointer;
     }
-    
-    /* .prev{
-        margin-right: 30px;
+
+    .prev{
+        margin-right: 15px;
     }
     
     .next{
-        margin-left: 30px;
-    } */
-    
+        margin-left: 15px;
+    }
+
     .prev:hover, .next:hover{
         border-color: #626262;
     }
@@ -2891,8 +2870,6 @@ body{
         transform: rotate(-136.86deg);
         top: 44px;
     }
-    
-    
     
     .next .slideBtnElem:nth-child(1){
         transform: rotate(-133.3deg);
@@ -2932,7 +2909,6 @@ body{
         background: linear-gradient(24deg, #353535, #ffffff, #777777, #000000);
     }
     
-    
     .char:nth-child(1) .charName{
         background-color: #E644FE;
     }
@@ -2958,29 +2934,19 @@ body{
         flex-direction: row;
         justify-content: center;
         opacity: 1;
+        padding: 0 15px;
+        margin-top: 30px;
     }
-    
-    .charImg{
-        margin: 0 30px 0 10px;
-    }
-    
+
     .charImg img{
-        width: 90%;
+        width: 85%;
         height: 100%;
     }
-    
-    .story{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-    
-    .charInfo{
-        width: 300px;
+
+    .charInfoContainer{
+        width: 500px;
         background-color: white;
-        border-radius: 25px;
-        margin-right: 10px;
+        border-radius: 30px;
     }
     
     .charText p{
@@ -2990,6 +2956,7 @@ body{
         text-align: center;
         margin: 0;
         padding: 25px 15px;
+        font-size: 30px;
     }
     
     .charName{
@@ -3005,12 +2972,12 @@ body{
     
     .charName p{
         text-align: center;
-        font-size: 25px;
+        font-size: 35px;
         margin: 0;
     }
     
     .pages{
-        margin-top: 20px;
+        margin: 20px;
         gap: 5px;
     }
     
@@ -3018,7 +2985,7 @@ body{
         width: 31px;
         height: 31px;
         border-radius: 50%;
-        border: 3px solid white;
+        border: 4px solid white;
         background-color: white;
     }
     
@@ -3076,8 +3043,8 @@ body{
     }
     
     .imgMedia img{
-        width: 16em;    
-        height: 12em;
+        width: 25em;    
+        height: 16em;
         border-radius: 25px;
     }
     
@@ -3102,7 +3069,7 @@ body{
     }
     
     .imgMediaGif{
-        width: 10em;
+        width: 13em;
         image-rendering: pixelated;
     }
     
@@ -3120,8 +3087,8 @@ body{
     }
     
     .footerLogo img{
-        width: 20em;
-        height: 5em;
+        width: 30em;
+        height: 7em;
     }
     
     .logos{
@@ -3130,13 +3097,19 @@ body{
         gap: 10px;
     }
 
-    .logos a img{
-        width: 4em;
-        height: 100%;
+    .logo{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 
-    .logos a:nth-child(3) img{
-        width: 3.3em;
+    .logo p{
+        color: white;
+    }
+
+    .logos a img{
+        width: 5em;
         height: 100%;
     }
 }
@@ -3146,7 +3119,7 @@ body{
         border-bottom: 5px solid white;
     }
     
-    .header, .headerButtons, .headerBtn, .mainScreen, .abbreviation, .buyButtons, .buyBtnText, .about, .blackFilter, .insideBlackFilter, .left, .right, .bottomAboutImg, .characters, .card, .prev, .next, .story, .charInfo, .charName, .charText p, .pages, .media, .imagesTop, .imagesBottom, .imgMedia, .footer, .logos{
+    .header, .headerButtons, .headerBtn, .mainScreen, .abbreviation, .buyButtons, .buyBtnText, .about, .blackFilter, .insideBlackFilter, .left, .right, .bottomAboutImg, .characters, .card, .prev, .next, .charInfo, .charName, .charText p, .pages, .media, .imagesTop, .imagesBottom, .imgMedia, .footer, .logos{
         display: flex;
         justify-content: center;
         align-items: center;
@@ -3544,13 +3517,13 @@ body{
         display: flex;
         position: absolute;
         width: 1200px;
-        height: 700px;
         border: 5px solid black;
         border-radius: 25px;
         opacity: 0;
         transform: translateX(100px) scale(0.9);
         transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         pointer-events: none;
+        padding: 15px 15px 0 15px;
     }
     
     .active{
@@ -3559,41 +3532,6 @@ body{
         position: relative;
         pointer-events: all;
     }
-    
-    /* .char::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255,255,255,0.2),
-        transparent
-    );
-    transition: left 0.8s ease;
-    z-index: 1;
-    }
-
-    .char:hover::before {
-        left: 100%;
-    }
-
-    .char:hover {
-        animation: colorPulse 2s infinite alternate;
-    }
-
-    @keyframes colorPulse {
-        0% {
-            filter: brightness(1) saturate(1);
-        }
-        100% {
-            filter: brightness(1.1) saturate(1.2);
-        }
-    } */
-
 
     .char:nth-child(1){
         background: linear-gradient(24deg, #43004E, #E644FE, #862096, #000000);
@@ -3634,25 +3572,18 @@ body{
     .char:nth-child(5) .charName{
         background-color: #E8E8E8;
     }
-    
 
-    .charImg{
-        margin: 0 20px 0 15px;
+    .charInfo{
+        margin-left: 25px;
+    }
+
+    .charInfoContainer{
+        background-color: white;
+        border-radius: 30px;
     }
     
     .charImg img{
-        width: 32.5em;
         height: 100%;
-    }
-    
-    .story{
-        flex-direction: column;
-    }
-    
-    .charInfo{
-        background-color: white;
-        border-radius: 25px;
-        margin-right: 15px;
     }
     
     .charText p{
