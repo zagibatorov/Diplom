@@ -167,7 +167,6 @@ chars.forEach(char => {
     char.addEventListener('mouseleave', function() {
         // Возвращаем карточку в исходное состояние
         this.style.transform = 'scale(1)';
-        this.style.boxShadow = 'none';
     });
 
 });
@@ -241,11 +240,18 @@ let burgerMenu = document.querySelector('.menuBurger');
 let headerButtonsMobile = document.querySelector('.headerButtonsMobile');
 
 burgerMenu.addEventListener('click', () => {
-    if(headerButtonsMobile.style.display === 'none'){
+    if (!headerButtonsMobile.classList.contains('show')) {
         headerButtonsMobile.style.display = 'flex';
-    }
-    else{
-        headerButtonsMobile.style.display = 'none';
+        setTimeout(() => {
+            headerButtonsMobile.classList.add('show');
+        }, 10);
+    } else {
+        headerButtonsMobile.classList.remove('show');
+        setTimeout(() => {
+            if (!headerButtonsMobile.classList.contains('show')) {
+                headerButtonsMobile.style.display = 'none';
+            }
+        }, 500);
     }
 })
 
