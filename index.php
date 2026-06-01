@@ -1,3 +1,53 @@
+<?php 
+    require_once 'connect.php';
+    session_start();
+
+    $messages = [];
+
+    if(isset($_SESSION['user_login'])){
+        $login = $_SESSION['user_login'];
+    } else{
+        $login = '';
+    }
+
+    if(isset($_SESSION['successAuth'])){
+        $messages[] = $_SESSION['successAuth'];
+        unset($_SESSION['successAuth']);
+    }
+
+    if(isset($_SESSION['successReg'])){
+        $messages[] = $_SESSION['successReg'];
+        unset($_SESSION['successReg']);
+    }
+
+    if(isset($_SESSION['errorAuth'])){
+        $messages[] = $_SESSION['errorAuth'];
+        unset($_SESSION['errorAuth']);
+    }
+
+    if(isset($_SESSION['emptyFields'])){
+        $messages[] = $_SESSION['emptyFields'];
+        unset($_SESSION['emptyFields']);
+    }
+
+    if(isset($_SESSION['emptyFieldsReg'])){
+        $messages[] = $_SESSION['emptyFieldsReg'];
+        unset($_SESSION['emptyFieldsReg']);
+    }
+
+    if(isset($_SESSION['logout'])){
+        $messages[] = $_SESSION['logout'];
+        unset($_SESSION['logout']);
+    }
+
+    $query = "SELECT * FROM `news` ORDER BY `created_at` DESC";
+    $result = mysqli_query($link, $query);
+
+    $news = [];
+    while($row = mysqli_fetch_assoc($result)){
+        $news[] = $row;
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +61,13 @@
 </head>
 <body>
     <div class="main">
+        <div class="messageBlock">
+            <p>Ну здарова, <?php echo $login ?></p>
+            <?php foreach($messages as $message): ?>
+                <p> <?php echo htmlspecialchars($message); ?></p>
+            <?php endforeach; ?>
+        </div>
+
         <!-- Полноэкранные картинки по клику в media -->
         <div class="imgMediaFullTL">
             <div class="fullImage TL"></div>
@@ -29,6 +86,70 @@
             <div class="closeBtnBR"></div>
         </div>
 
+        <!-- Окно регистрации/авторизации -->
+         <div class="authRegBlock">
+            <div class="authRegWindow">
+                <h1>Авторизация</h1>
+                <form method="POST" action="auth.php">
+                    <label for="login">Логин</label>
+                    <input name="login" value="<?php echo isset($_SESSION['saved_login']) ? htmlspecialchars($_SESSION['saved_login']) : ''; ?>">
+                    <label for="pass">Пароль</label>
+                    <input name="pass">
+                    <input type="submit" value="Войти" class="submitBtn">
+                </form>
+
+                <h1>Регистрация</h1>
+                <form method="POST" action="register.php">
+                    <label for="newLogin">Логин</label>
+                    <input name="newLogin" value="<?php echo isset($_SESSION['saved_reg_login']) ? htmlspecialchars($_SESSION['saved_reg_login']) : ''; ?>">
+                    <label for="newPass">Пароль</label>
+                    <input name="newPass">
+                    <input type="submit" value="Зарегистрироваться" class="submitBtn">
+                </form>
+
+                <div class="closeAuthRegBtn"></div>
+            </div>
+         </div>
+        
+        <!-- Окно скидки -->
+        <?php if(!isset($_SESSION['isAuth']) || !$_SESSION['isAuth']): ?>
+            <div class="requestBlock">
+                <div class="requestWindow">
+                    <div class="contentLeft"></div>
+                    <div class="contentRight">
+                        <div class="closeRequestWindowBtn"></div>
+                        <h1>Зарегистрируйтесь, чтобы получить скидку!</h1>
+                        <div class="authRegBtn">Войти</div>
+
+                        <div class="discountBlock">
+                            <button class="getCodeBtn">Получить код на скидку</button>
+                            <div class="discountCode"></div>
+                        </div>
+                    </div>
+                   
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <div class="createNewBlock">
+            <div class="createNewWindow">
+                <form action="create_new.php" method="POST" enctype="multipart/form-data">
+                    <label for="headerText">Заголовок новости:</label>
+                    <input name="headerText" type="text" class="headerText">
+
+                    <label for="blockText">Текст новости:</label>
+                    <textarea name="blockText" class="blockText"></textarea>
+
+                    <label for="newsImage">Изображение новости:</label>
+                    <input name="newsImage" type="file" accept="image/*" class="addImageBtn">
+
+                    <input type="submit" value="Создать новость" class="createNewBtn">
+                </form>
+
+                <div class="closeCreateNewBlockBtn"></div>
+            </div>
+        </div>
+
         <!-- Хэдэр -->
         <div class="header">
             <div class="headerImg">
@@ -38,7 +159,14 @@
                 <div class="headerBtn" id="toAbout"><p>Об игре</p></div>
                 <div class="headerBtn" id="toChar"><p>Персонажи</p></div>
                 <div class="headerBtn" id="toMedia"><p>Медиа</p></div>
+                <div class="headerBtn" id="toNews"><p>Новости</p></div>
                 <div class="headerBtn" id="toFooter"><p>Ссылки</p></div>
+
+                <?php if(isset($_SESSION['isAuth']) && $_SESSION['isAuth']): ?>
+                    <div class="headerBtn" id="logout"><p>Выйти</p></div>
+                <?php else: ?>  
+                    <div class="headerBtn" id="auth"><p>Войти</p></div>  
+                <?php endif; ?>  
             </div>
 
             <div class="menuBurger">
@@ -266,29 +394,78 @@
                 </div>
             </div>
         </div>
+        <div class="news" id="newsBlock">
+            <div class="abbreviation">
+                <p>Новости</p>
+            </div>
+            <div class="newsContainer"> 
+                <?php 
+                    $getNews = "SELECT * FROM `news` ORDER BY `created_at` DESC";
+                    $getNewsQuery = mysqli_query($link, $getNews);
+
+                    if(mysqli_num_rows($getNewsQuery) > 0){
+                        while($news = mysqli_fetch_assoc($getNewsQuery)){
+                            echo '<div class = "new" data-id="' . $news['id'] . '" >';
+                            
+                            // echo '<p>' . $news['id'] . '</p>' . '<br>';
+                            echo '<div class = "newsImage">';
+                            if(!empty($news['image_path']) && file_exists($news['image_path'])){
+                                echo '<img src="' . htmlspecialchars($news['image_path']) . '" alt="News image">';
+                            } else {
+                                echo '<div class="no-image">Нет изображения</div>';
+                            }
+                            echo '</div>';
+
+                            echo '<div class = "newsHeader">' . '<h1>' . $news['header'] . '</h1>' . '</div>';
+                            echo '<div class = "newsText">' . '<p>' . $news['content'] . '</p>' . '</div>';
+
+                            // onclick="return confirm(\'Удалить новость?\')
+                            if(isset($_SESSION['isAuth']) && $_SESSION['user_role'] == 'admin'){
+                                echo '<a href="delete_new.php?id=' . $news['id'] . '" class="deleteNewBtn" ">Удалить</a>';
+                            }
+                            echo '</div>';
+                        }
+                    } else {
+                        echo '<p style="color: white;">Новостей пока нет</p>';
+                    }                    
+                ?>
+            </div>
+        <?php if(isset($_SESSION['isAuth']) && $_SESSION['user_role'] == 'admin') : ?>
+            <div class="openCreateNewBlock">Создать новость</div>
+        <?php endif; ?>
+        </div>
         <div class="footer" id="footer">
             <div class="footerLogo">
                 <a href="https://www.thebehemoth.com/"><img src="./images/Фото слева.png" alt=""></a>
             </div>
             <div class="logos">
                 <div class="logo">
-                    <a href="https://www.castlecrashers.com" class="logoImg"><img src="./images/Chicken.png" alt=""></a>
-                    <p>Офиц. сайт</p>
+                    <div class="logoImg">
+                        <a href="https://www.castlecrashers.com" class="logoImg"><img src="./images/Chicken.png" alt=""></a>
+                    </div>
+                    <div class="logoText">
+                        <p>Офиц. сайт</p>
+                    </div>
                 </div>
                 <div class="logo">
-                    <a href="https://www.youtube.com/@TheBehemothGames/videos" class="logoImg"><img src="./images/Youtube_logo.png" alt=""></a>
-                    <p>Ютуб</p>
+                    <div class="logoImg">
+                        <a href="https://www.youtube.com/@TheBehemothGames/videos" class="logoImg"><img src="./images/Youtube_logo.png" alt=""></a>
+                    </div>
+                    <div class="logoText">
+                        <p>Ютуб</p>
+                    </div>
                 </div>
                 <div class="logo">
-                    <a href="https://www.twitch.tv/thebehemoth" class="logoImg"><img src="./images/Twitch_logo11.png" alt=""></a>
-                    <p>Твич</p>
+                    <div class="logoImg">
+                        <a href="https://www.twitch.tv/thebehemoth" class="logoImg"><img src="./images/Twitch_logo11.png" alt=""></a>
+                    </div>
+                    <div class="logoText">
+                        <p>Твич</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-
-
 
 
 

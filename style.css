@@ -3158,7 +3158,7 @@ body{
     }
 }
 @media (min-width: 1559px) {
-    .header, .mainScreen, .about, .characters, .media{
+    .header, .mainScreen, .about, .characters, .media, .news{
         width: 100%;
         border-bottom: 5px solid white;
     }
@@ -3173,11 +3173,7 @@ body{
         flex-direction: column;
     }
     
-    .header, .footer{
-        background-color: black;
-    }
-    
-    .abbreviation, .headerButtons, .headerBtn a, .charName p{
+    .messageBlock, .authRegWindow > h1, .abbreviation, .headerButtons, .headerBtn a, .charName p{
         font-family: "PressStart2P", serif;
     }
     
@@ -3208,6 +3204,22 @@ body{
         width: 100%;
         height: 100%;
         background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    .messageBlock{
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-size: 30px;
+        border: 6px solid white;
+        border-radius: 25px;
+        padding: 15px;
+        margin-top: 30px;
+        z-index: 100;
+        background-color: rgb(255, 219, 56, 1);
+        visibility: hidden;
     }
     
     .imgMediaFullTL, .imgMediaFullTR, .imgMediaFullBL, .imgMediaFullBR{
@@ -3276,6 +3288,289 @@ body{
         background-size: cover;
     }
 
+    .authRegBlock{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        width: 100%;
+        height: 1080px;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 10;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    .authRegBlockActive{
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .authRegWindow{
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        color: white;
+        background-color: rgba(119, 119, 119, 0.9);
+        border: 5px solid white;
+        border-radius: 35px;
+        padding: 40px;
+        transform: translateY(-30px);
+        transition: transform 0.5s ease;
+    }
+
+    .authRegBlockActive .authRegWindow {
+        transform: translateY(0);
+    }
+
+    .authRegWindow h1{
+        font-size: 40px;
+    }
+
+    .authRegWindow > form{
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .authRegWindow > form > input{
+        height: 40px;
+        font-size: 20px;
+        border: 3px solid black;
+        border-radius: 10px;
+    }
+    
+    .authRegWindow > form > input.submitBtn{
+        font-size: 30px;
+        margin-top: 20px;
+        cursor: pointer;
+        transition: all 0.7s ease;
+    }
+
+    .authRegWindow > form > input.submitBtn:hover{
+        color: white;
+        border-color: white;
+        background-color: #66CD99;
+        box-shadow: 0 0 3px 3px #66CD99;
+    }
+    
+
+    .authRegWindow > form > label{
+        font-size: 25px;
+    }
+
+
+    .closeAuthRegBtn{
+        position: absolute;
+        width: 55px;
+        height: 55px;
+        cursor: pointer;
+        left: 455px;
+        top: 10px;
+        background-image: url(./images/krestik_white.png);
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+    }
+
+    .requestBlock{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        width: 100%;
+        height: 1080px;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 9;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 1s ease, visibility 1s ease;
+    }
+
+    .requestBlockActive{
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .requestWindow{
+        display: flex;
+        width: 1300px;
+        height: 562px;
+        background-color: gray;
+        border: 5px solid white;
+        border-radius: 20px;
+    }
+
+    .requestWindow > .contentLeft{
+        width: 60%;
+        height: 100%;
+        background-image: url(./images/requestImage.png);
+        background-repeat: no-repeat;
+    }
+
+    .requestWindow > .contentRight{
+        position: relative;
+        display: flex;
+        width: 40%;
+        height: 100%;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    .requestWindow > .contentRight > h1{
+        font-size: 45px;
+        color: white;
+        margin-top: 50px;
+        text-align: center;
+    }
+
+    .authRegBtn{
+        font-size: 35px;
+        background-color: gray;
+        border: 5px solid white;
+        border-radius: 30px;
+        align-items: center;
+        margin: 0 auto;
+        padding: 0 25px;
+        cursor: pointer;
+        color: white;
+    }
+
+    .closeRequestWindowBtn{
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 60px;
+        height: 60px;
+        cursor: pointer;
+        background-image: url(./images/krestik_white.png);
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center; 
+    }
+
+    .discountBlock{
+        display: flex;
+        width: 100%;
+        background-color: green;
+        visibility: hidden;
+    }
+
+    .getCodeBtn{
+        font-family: 'Kurale';
+        font-size: 35px;
+        background-color: gray;
+        border: 5px solid white;
+        border-radius: 30px;
+        align-items: center;
+        margin: 0 auto;
+        padding: 0 25px;
+        cursor: pointer;
+        color: white;
+    }
+
+    .createNewBlock{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        width: 100%;
+        height: 1080px;
+        background-color: rgba(0, 0, 0, 0.7);
+        visibility: visible;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 1s ease, visibility 1s ease;
+    }
+
+    .createNewBlockActive{
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .createNewBlockActive .createNewWindow{
+        transform: translateY(0);
+    }
+
+    .createNewWindow{
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        background-color: gray;
+        border: 5px solid white;
+        border-radius: 15px;
+        transform: translateY(-30px);
+        transition: transform 0.5s ease;
+    }
+
+    .createNewWindow form{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .createNewWindow form > label{
+        font-family: 'PressStart2P';
+        font-size: 30px;
+        color: white;
+        margin: 15px 0;
+    }
+
+    .headerText{
+        height: 40px;
+        font-size: 20px;
+        border: 3px solid black;
+        border-radius: 10px;
+    }
+
+    .blockText{
+        width: 400px;
+        height: 200px;
+        font-size: 20px;
+        border: 3px solid black;
+        border-radius: 10px;
+    }
+
+    .addImageBtn{
+        margin: 10px 0 0 0;
+    }
+
+    .createNewBtn{
+        font-family: 'Kurale';
+        font-size: 25px;
+        background-color: gray;
+        border: 4px solid white;
+        border-radius: 20px;
+        align-items: center;
+        margin: 20px 0 0 0;
+        padding: 10px;
+        cursor: pointer;
+        color: white;
+    }
+
+    .closeCreateNewBlockBtn{
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 50px;
+        height: 50px;
+        cursor: pointer;
+        background-image: url(./images/krestik_white.png);
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center; 
+    }
+
+
+
+
+
+
+
 
     /* хэдэр */
     .header{
@@ -3309,24 +3604,34 @@ body{
     
     
     /* ховер кнопок */
-    .headerBtn:nth-child(1):hover{
+    .headerBtn#toAbout:hover{
         background-color: #66CD99;
         box-shadow: 0 0 3px 3px #66CD99;
     }
     
-    .headerBtn:nth-child(2):hover{
+    .headerBtn#toChar:hover{
         background-color: #FF6666;
         box-shadow: 0 0 3px 3px #FF6666;
     }
     
-    .headerBtn:nth-child(3):hover{
+    .headerBtn#toMedia:hover{
         background-color: #6A9EFF;
         box-shadow: 0 0 3px 3px #6A9EFF;
     }
     
-    .headerBtn:nth-child(4):hover{
+    .headerBtn#toNews:hover{
         background-color: #FFDA37;
         box-shadow: 0 0 3px 3px #FFDA37;
+    }
+
+    .headerBtn#toFooter:hover{
+        background-color: pink;
+        box-shadow: 0 0 3px 3px pink;
+    }    
+    
+    .headerBtn#auth:hover, .headerBtn#logout:hover{
+        background-color: purple;
+        box-shadow: 0 0 3px 3px purple;
     }
 
     .headerButtonsMobile{
@@ -3335,7 +3640,7 @@ body{
     
     
     
-    /* первый блок (главный экран)*/
+    /* Главный экран*/
 
     .mainScreen{
         position: relative;
@@ -3351,12 +3656,12 @@ body{
     .contentWrap{
         position: relative;
         display: flex;
+        align-items: center;
+        flex-direction: column;
         width: 100%;
         top: 0;
         z-index: 1;
         background-color: rgba(0, 0, 0, 0.3);
-        flex-direction: column;
-        align-items: center;
     }
     
     .mainScreenImg{
@@ -3428,7 +3733,7 @@ body{
     
     
 
-    /* второй блок (об игре)*/
+    /* Блок Об игре*/
 
     .about{
         font-size: 15px;
@@ -3439,6 +3744,7 @@ body{
         display: flex;
         justify-content: center;
         align-items: center;
+        margin-bottom: 20px;
     }
     
     .left{
@@ -3498,7 +3804,7 @@ body{
 
 
 
-    /* третий блок (персонажи) */
+    /* Блок персонажей */
     
     .card{
         margin: 40px 0;
@@ -3624,6 +3930,10 @@ body{
         background-color: #E8E8E8;
     }
 
+    .charImg img{
+        height: 100%;
+    }  
+
     .charInfo{
         margin-left: 25px;
     }
@@ -3632,19 +3942,7 @@ body{
         background-color: white;
         border-radius: 30px;
     }
-    
-    .charImg img{
-        height: 100%;
-    }
-    
-    .charText p{
-        font-size: 35px;
-        text-align: center;
-        margin: 0;
-        height: 350px;
-        padding: 25px 15px;
-    }
-    
+
     .charName{
         width: 100%;
         height: 120px;
@@ -3657,6 +3955,14 @@ body{
         text-align: center;
         font-size: 50px;
         margin: 0;
+    }
+    
+    .charText p{
+        font-size: 35px;
+        text-align: center;
+        margin: 0;
+        height: 350px;
+        padding: 25px 15px;
     }
     
     .pages{
@@ -3694,8 +4000,8 @@ body{
     
     
     
-    
-    /* четвёртый блок (медиа) */
+    /* Блок Медиа */
+
     .media{
         background-image: url(./images/MediaBackg.png);
         background-repeat: no-repeat;
@@ -3720,6 +4026,7 @@ body{
         background-color: white;
         padding: 7px;
         border-radius: 25px;
+        cursor: pointer;
         transition: all 0.5s ease;
     }
     
@@ -3789,11 +4096,140 @@ body{
         width: 100%;
         height: 100%;
     }
+
+
+
+    /* Блок новостей */
+
+    .news{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .newsContainer{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 1650px;
+        margin: 30px 0 35px 0;
+        padding: 20px;
+        gap: 20px;
+    }
+
+    .new{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 520px;
+        background-color: gray;
+        overflow: hidden;
+        overflow-wrap: break-word;
+        box-sizing: border-box;
+        border: 5px solid white;
+        border-radius: 20px;
+        padding: 10px;
+    }
+
+    .newsImage{
+        width: 480px;
+        height: 480px;
+        overflow: hidden;
+        background-color: #333;
+        border: 5px solid white;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .newsImage img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    .no-image {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #444;
+        color: white;
+        font-size: 16px;
+        text-align: center;
+    }
+    
+    .newsHeader {
+        width: 100%;
+        margin-top: 10px;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    .newsHeader h1 {
+        font-family: 'PressStart2P';
+        font-size: 24px;
+        margin: 0 0 10px 0;
+        color: white;
+        text-align: center;
+        word-break: break-word;
+    }
+
+    .newsText {
+        width: 100%;
+        padding: 0 10px 10px 10px;
+        box-sizing: border-box;
+    }
+
+    .newsText p {
+        font-size: 16Lorepx;
+        margin: 0;
+        color: #ddd;
+        word-break: break-word;
+    }
+
+    .deleteNewBtn{
+        display: flex;
+        justify-content: center;
+        font-size: 20px;
+        height: 2em;
+        background-color: gray;
+        border: 4px solid white;
+        border-radius: 20px;
+        align-items: center;
+        padding: 0 10px;
+        cursor: pointer;
+        color: white;
+        text-decoration: none;
+        transition: all 0.5s ease;
+    }
+
+    .deleteNewBtn:hover{
+        background-color: #FF6666;
+        box-shadow: 0 0 3px 3px #FF6666;
+    }
+
+    .openCreateNewBlock{
+        font-size: 20px;
+        text-decoration: none;
+        background-color: gray;
+        color: white;
+        cursor: pointer;
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 4px solid white;
+        border-radius: 20px;
+    }
     
     
     
-    
-    /* футер */
+    /* Футер */
+
     .footer{
         justify-content: space-around;
         align-items: center;
@@ -3809,39 +4245,31 @@ body{
         gap: 15px;
     }
 
-    .logos a img{
-        width: 6em;
-        height: 100%;
-    }
-
-    .logos a:nth-child(1) img{
-        width: 5em;
-        height: 100%;
-    }
-
-    .logos a:nth-child(3) img{
-        width: 4.8em;
-        height: 100%;
-    }
-
     .logo{
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
+    }  
+
+    /* .logoImg{
+        background-color: green;
+    }
+
+    .logoText{
+        background-color: red;
+    } */
+
+    
+    .logo a img{
+        width: 7em;
     }
 
     .logo p{
         text-align: center;
         color: white;
+        margin: 0;
     }
-
-    /* .logo:nth-child(2) img{
-        margin-bottom: 50px;
-    } */
-
-    /* .logo:nth-child(2) p{
-        margin-top: 40px;
-    } */
 }
+
 

@@ -3,11 +3,13 @@
 let toAbout = document.getElementById('toAbout');
 let toChar = document.getElementById('toChar');
 let toMedia = document.getElementById('toMedia');
+let toNews = document.getElementById('toNews');
 let toFooter = document.getElementById('toFooter');
 
 let aboutBlock = document.getElementById('aboutBlock');
 let charBlock = document.getElementById('charBlock');
 let mediaBlock = document.getElementById('mediaBlock');
+let newsBlock = document.getElementById('newsBlock');
 let footer = document.getElementById('footer');
 
 toAbout.addEventListener('click', () => {
@@ -31,12 +33,105 @@ toMedia.addEventListener('click', () => {
     });
 });
 
+toNews.addEventListener('click', () => {
+    newsBlock.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+    });
+});
+
 toFooter.addEventListener('click', () => {
     footer.scrollIntoView({
         behavior: 'smooth',
         block: 'start'
     });
 });
+
+
+// Показ блока с авторизацией/регистрацией по нажатию кнопки
+    let authBtn = document.getElementById('auth');
+    let authRegBlock = document.querySelector('.authRegBlock');
+
+    if(authBtn){
+        authBtn.addEventListener('click', function(){
+            authRegBlock.style.display = 'flex';
+            authRegBlock.classList.add('authRegBlockActive');
+        });
+    }
+
+// Показ блока с авторизацией/регистрацией в блоке с предложением скидки
+    let authRegBtn = document.querySelector('.authRegBtn');
+
+    if(authRegBtn){
+        authRegBtn.addEventListener('click', function(){
+            authRegBlock.classList.add('authRegBlockActive');
+        });
+    }
+
+
+
+// Кнопка выхода из профиля
+    let logoutBtn = document.getElementById('logout');
+
+    if(logoutBtn){
+        logoutBtn.addEventListener('click', function(){
+            window.location.href = 'logout.php';
+        });
+    }
+
+
+
+// Закрытие блока с авторизацией/регистрацией
+    let closeAuthRegBtn = document.querySelector('.closeAuthRegBtn');
+
+    closeAuthRegBtn.addEventListener('click', function(){
+        if(authRegBlock.classList.contains('authRegBlockActive')){
+            authRegBlock.classList.remove('authRegBlockActive');
+        }
+    });
+
+// Закрытие окна создания новостей
+    let closeCreateNewBlockBtn = document.querySelector('.closeCreateNewBlockBtn');
+
+    closeCreateNewBlockBtn.addEventListener('click', () => {
+        if(createNewBlock.classList.contains('createNewBlockActive')){
+            createNewBlock.classList.remove('createNewBlockActive');
+        }
+    });
+
+
+
+
+
+// Показ блока с предложением скидки через 60 секунд для неавторизованных пользователей
+    // let requestBlock = document.querySelector('.requestBlock');
+    // let closeRequestWindowBtn = document.querySelector('.closeRequestWindowBtn');
+
+    // if(requestBlock){
+    //     let timer = setTimeout(function() {
+    //         requestBlock.classList.add('requestBlockActive');
+    //     }, 1000);
+
+    //     let closeRequestWindowBtn = document.querySelector('.closeRequestWindowBtn');
+    //     if(closeRequestWindowBtn){
+    //         closeRequestWindowBtn.addEventListener('click', function(){
+    //             requestBlock.classList.remove('requestBlockActive');
+    //             clearTimeout(timer);
+    //         });
+    //     }
+    // }
+
+
+//Показ блока создания новостей для админа\
+
+let createNewBlock = document.querySelector('.createNewBlock');
+let openCreateNewBlock = document.querySelector('.openCreateNewBlock');
+
+if(openCreateNewBlock){
+    openCreateNewBlock.addEventListener('click', () => {
+        createNewBlock.classList.add('createNewBlockActive');
+    });
+}
 
 
 
@@ -256,6 +351,7 @@ burgerMenu.addEventListener('click', () => {
 })
 
 
+
 // Функция для проверки видимости элемента
 function isElementInViewport(elem) {
     const rect = elem.getBoundingClientRect();
@@ -264,6 +360,29 @@ function isElementInViewport(elem) {
         rect.bottom >= 0
     );
 }
+
+
+// // Автоматическое исчезновение уведомления через 5 секунд
+// document.addEventListener('DOMContentLoaded', function() {
+//     const notification = document.querySelector('.notification');
+//     if (notification) {
+//         setTimeout(() => {
+//             if (notification && !notification.classList.contains('hide')) {
+//                 closeNotification();
+//             }
+//         }, 5000);
+//     }
+// });
+
+// let logoutBtn = document.getElementById('logout');
+
+// logoutBtn.addEventListener('click', function() {
+//     window.location.href = 'logout.php';
+// });
+
+
+
+
 
 
 
@@ -307,3 +426,29 @@ function isElementInViewport(elem) {
 
 // Также проверяем при загрузке страницы (на случай если элемент уже в viewport)
 // window.addEventListener('load', handleScroll);
+
+
+
+// Генератор кода для скидки
+
+function generateCode(){
+    let code = [];
+
+    for(let i = 0; i < 6; i++){
+        code.push(Math.floor(Math.random() * 10));
+    }
+
+    return code.join('');
+}
+
+console.log(generateCode());
+
+let getCodeBtn = document.querySelector('.getCodeBtn');
+let discountBlock = document.querySelector('.discountCode');
+
+if(getCodeBtn){
+    getCodeBtn.addEventListener('click', () => {
+        code = generateCode();
+        discountBlock.textContent = code;
+    });
+}
