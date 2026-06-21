@@ -9,15 +9,16 @@
 
         $getUser = "SELECT * FROM `users` WHERE `login` = '$login'";
         $res = mysqli_query($link, $getUser);
+        $user = mysqli_fetch_assoc($res);
 
-        if($res){
-            $row = mysqli_fetch_assoc($res);
+        if(!empty($user)){
+            $hash = $user['password'];
 
-            if($pass == $row['password']){
+            if(password_verify($pass, $hash)){
                 $_SESSION['isAuth'] = true;
-                $_SESSION['user_id'] = $row['id'];
-                $_SESSION['user_login'] = $row['login'];
-                $_SESSION['user_role'] = $row['role'];
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['user_login'] = $user['login'];
+                $_SESSION['user_role'] = $user['role'];
                 $_SESSION['successAuth'] = 'Успешная авторизация';
 
                 unset($_SESSION['saved_login']);
@@ -42,5 +43,4 @@
         header('Location: index.php');
         exit();
     };
-
 ?>

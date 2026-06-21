@@ -30,11 +30,11 @@ body{
 }
 
 /* Плавное появление блоков при прокрутке */
-/* 
-.header > *, .mainScreen > *, .about > *, .characters > *, .media > *, .footer > * {
+
+.header > *, .mainScreen > *, .about > *, .characters > *, .media > *, .news > *, .footer > * {
     opacity: 0;
     transition: opacity 2s ease;
-} */
+}
 
 .visible > *{
     opacity: 1;
@@ -60,7 +60,7 @@ body{
         background-color: black;
     }
     
-    .abbreviation, .headerButtons, .headerBtn a, .headerBtnMobile p, .charName p{
+    .messageBlock, .abbreviation, .headerButtons, .headerBtn a, .headerBtnMobile p, .charName p{
         font-family: "PressStart2P", serif;
     }
     
@@ -92,6 +92,107 @@ body{
         width: 100%;
         height: 100%;
         background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    .messageBlock{
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-size: 15px;
+        border: 4px solid white;
+        border-radius: 20px;
+        padding: 5px;
+        margin-top: 30px;
+        z-index: 100;
+        background-color: rgb(255, 219, 56, 1);
+    }
+
+    .authRegBlock{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        width: 100%;
+        height: 1080px;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 100;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    .authRegBlockActive{
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .authRegWindow{
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        color: white;
+        background-color: rgba(119, 119, 119, 0.9);
+        border: 5px solid white;
+        border-radius: 35px;
+        padding: 40px;
+        transform: translateY(-30px);
+        transition: transform 0.5s ease;
+    }
+
+    .authRegBlockActive .authRegWindow {
+        transform: translateY(0);
+    }
+
+    .authRegWindow h1{
+        font-size: 40px;
+    }
+
+    .authRegWindow > form{
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .authRegWindow > form > input{
+        height: 40px;
+        font-size: 20px;
+        border: 3px solid black;
+        border-radius: 10px;
+    }
+    
+    .authRegWindow > form > input.submitBtn{
+        font-size: 30px;
+        margin-top: 20px;
+        cursor: pointer;
+        transition: all 0.7s ease;
+    }
+
+    .authRegWindow > form > input.submitBtn:hover{
+        color: white;
+        border-color: white;
+        background-color: #66CD99;
+        box-shadow: 0 0 3px 3px #66CD99;
+    }
+    
+
+    .authRegWindow > form > label{
+        font-size: 25px;
+    }
+
+
+    .closeAuthRegBtn{
+        position: absolute;
+        width: 55px;
+        height: 55px;
+        cursor: pointer;
+        left: 455px;
+        top: 10px;
+        background-image: url(./images/krestik_white.png);
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
     }
 
     
@@ -174,7 +275,7 @@ body{
         flex-direction: column;
         position: absolute;
         background-color: rgba(119, 119, 119, 0.9);
-        z-index: 1000;
+        z-index: 10;
         top: 100px;
         right: 0;
         margin: 0;
@@ -3219,8 +3320,44 @@ body{
         margin-top: 30px;
         z-index: 100;
         background-color: rgb(255, 219, 56, 1);
-        visibility: hidden;
     }
+
+    .backToTopBtn{
+        position: fixed;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 5px solid white;
+        border-radius: 20px;
+        width: 80px;
+        height: 80px;
+        bottom: 30px;
+        right: 50px;
+        opacity: 0;
+        visibility: hidden;
+        cursor: pointer;
+        background-color: gray;
+        z-index: 10;
+        transition: all 0.5s ease;
+    }
+
+    .backToTopBtn.visible{
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .backToTopBtn::before {
+        content: "↑";
+        font-size: 50px;
+        color: white;
+    }
+
+    .backToTopBtn:hover{
+        background-color: #66CD99;
+        box-shadow: 0 0 3px 3px #66CD99;
+    }
+
+
     
     .imgMediaFullTL, .imgMediaFullTR, .imgMediaFullBL, .imgMediaFullBR{
         display: flex;
@@ -3360,7 +3497,6 @@ body{
         font-size: 25px;
     }
 
-
     .closeAuthRegBtn{
         position: absolute;
         width: 55px;
@@ -3372,6 +3508,61 @@ body{
         background-repeat: no-repeat;
         background-size: contain;
         background-position: center;
+    }
+
+    .profileBlock{
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 325px;
+        top: 105px;
+        right: 0;
+        background-color: gray;
+        z-index: 10;
+        opacity: 0;
+        visibility: hidden;
+        border: 5px solid white;
+        border-radius: 20px;
+        transform: translateX(300px);
+        transition: all 0.5s ease;
+    }
+
+    .profileBlock.activeProfile{
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(0px);
+    }
+
+    .profileBlock > h1{
+        margin-top: 40px;
+        font-size: 40px;
+    }
+
+    .profileBlock > p{
+        font-size: 25px;
+        margin: 0 0 20px 0;
+    }
+
+    .profileBlock > h1, .profileBlock > p{
+        color: white;
+    }
+
+    .profileBlock > .headerBtn{
+        margin-bottom: 20px;
+    }
+
+    .closeProfileBlockBtn{
+        width: 50px;
+        height: 50px;
+        top: 0;
+        right: 0;
+        position: absolute;
+        cursor: pointer;
+        background-image: url(./images/krestik_white.png);
+        background-repeat: no-repeat;
+        background-size: cover;
     }
 
     .requestBlock{
@@ -3452,9 +3643,10 @@ body{
 
     .discountBlock{
         display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
         width: 100%;
-        background-color: green;
-        visibility: hidden;
     }
 
     .getCodeBtn{
@@ -3550,6 +3742,12 @@ body{
         padding: 10px;
         cursor: pointer;
         color: white;
+        transition: all 0.5s ease;
+    }
+
+    .createNewBtn:hover{
+        background-color: #66CD99;
+        box-shadow: 0 0 3px 3px #66CD99;
     }
 
     .closeCreateNewBlockBtn{
@@ -3564,13 +3762,6 @@ body{
         background-size: contain;
         background-position: center; 
     }
-
-
-
-
-
-
-
 
     /* хэдэр */
     .header{
@@ -3594,7 +3785,7 @@ body{
         height: 2em;
         background-color: gray;
         border: 5px solid white;
-        border-radius: 25px;
+        border-radius: 20px;
         align-items: center;
         padding: 0 10px;
         cursor: pointer;
@@ -3604,7 +3795,7 @@ body{
     
     
     /* ховер кнопок */
-    .headerBtn#toAbout:hover{
+    .headerBtn#toAbout:hover, .headerBtn#logout:hover{
         background-color: #66CD99;
         box-shadow: 0 0 3px 3px #66CD99;
     }
@@ -3629,7 +3820,7 @@ body{
         box-shadow: 0 0 3px 3px pink;
     }    
     
-    .headerBtn#auth:hover, .headerBtn#logout:hover{
+    .headerBtn#auth:hover, .headerBtn#profile:hover{
         background-color: purple;
         box-shadow: 0 0 3px 3px purple;
     }
@@ -3760,12 +3951,25 @@ body{
         border-radius: 50px;
         border: 5px solid white;
         margin: 25px;
+        animation: leftTextMove 5s infinite;
     }
 
     .left-text p{
         text-align: center;
         font-size: 40px;
         color: white;
+    }
+    
+    @keyframes leftTextMove {
+        0%{
+            transform: translateY(0px);
+        }
+        50%{
+            transform: translateY(30px);
+        }
+        100%{
+            transform: translateY(0px);
+        }
     }
     
     .right{
@@ -3870,6 +4074,7 @@ body{
         border: 5px solid black;
         border-radius: 25px;
         opacity: 0;
+        visibility: hidden;
         transform: translateX(100px) scale(0.9);
         transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         pointer-events: none;
@@ -3885,6 +4090,7 @@ body{
     
     .active{
         opacity: 1;
+        visibility: visible;
         transform: translateX(0) scale(1);
         position: relative;
         pointer-events: all;
@@ -4224,8 +4430,13 @@ body{
         padding: 15px;
         border: 4px solid white;
         border-radius: 20px;
+        transition: all 0.5s ease;
     }
     
+    .openCreateNewBlock:hover{
+        background-color: rgb(102, 205, 153);
+        box-shadow: rgb(102, 205, 153) 0px 0px 3px 3px;
+    }
     
     
     /* Футер */
@@ -4252,15 +4463,17 @@ body{
         flex-direction: column;
     }  
 
-    /* .logoImg{
-        background-color: green;
+    .logo:nth-child(2) .logoImg{
+        padding: 11px 0 11px 0;
     }
 
-    .logoText{
-        background-color: red;
-    } */
+    .logoImg{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
 
-    
     .logo a img{
         width: 7em;
     }

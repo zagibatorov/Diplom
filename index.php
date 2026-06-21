@@ -6,6 +6,9 @@
 
     if(isset($_SESSION['user_login'])){
         $login = $_SESSION['user_login'];
+
+        $getUser = mysqli_query($link, "SELECT * FROM `users` WHERE `login` = '$login'");
+        $user = mysqli_fetch_assoc($getUser);
     } else{
         $login = '';
     }
@@ -18,6 +21,11 @@
     if(isset($_SESSION['successReg'])){
         $messages[] = $_SESSION['successReg'];
         unset($_SESSION['successReg']);
+    }
+
+    if(isset($_SESSION['errorReg'])){
+        $messages[] = $_SESSION['errorReg'];
+        unset($_SESSION['errorReg']);
     }
 
     if(isset($_SESSION['errorAuth'])){
@@ -33,6 +41,11 @@
     if(isset($_SESSION['emptyFieldsReg'])){
         $messages[] = $_SESSION['emptyFieldsReg'];
         unset($_SESSION['emptyFieldsReg']);
+    }
+
+    if(isset($_SESSION['logout'])){
+        $messages[] = $_SESSION['logout'];
+        unset($_SESSION['logout']);
     }
 
     if(isset($_SESSION['logout'])){
@@ -61,12 +74,17 @@
 </head>
 <body>
     <div class="main">
-        <div class="messageBlock">
-            <p>Ну здарова, <?php echo $login ?></p>
-            <?php foreach($messages as $message): ?>
-                <p> <?php echo htmlspecialchars($message); ?></p>
-            <?php endforeach; ?>
-        </div>
+        <!-- Окно сообщений -->
+        <?php if(!empty($messages)): ?>
+            <div class="messageBlock">
+                <?php foreach($messages as $message): ?>
+                    <p><?php echo htmlspecialchars($message);?></p>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+
+        <div class="backToTopBtn"></div>
+
 
         <!-- Полноэкранные картинки по клику в media -->
         <div class="imgMediaFullTL">
@@ -87,14 +105,14 @@
         </div>
 
         <!-- Окно регистрации/авторизации -->
-         <div class="authRegBlock">
+        <div class="authRegBlock">
             <div class="authRegWindow">
                 <h1>Авторизация</h1>
                 <form method="POST" action="auth.php">
                     <label for="login">Логин</label>
                     <input name="login" value="<?php echo isset($_SESSION['saved_login']) ? htmlspecialchars($_SESSION['saved_login']) : ''; ?>">
                     <label for="pass">Пароль</label>
-                    <input name="pass">
+                    <input type="password" name="pass">
                     <input type="submit" value="Войти" class="submitBtn">
                 </form>
 
@@ -102,35 +120,32 @@
                 <form method="POST" action="register.php">
                     <label for="newLogin">Логин</label>
                     <input name="newLogin" value="<?php echo isset($_SESSION['saved_reg_login']) ? htmlspecialchars($_SESSION['saved_reg_login']) : ''; ?>">
+                    <label for="email">Почта</label>
+                    <input type="text" name="email" value="<?php echo isset($_SESSION['saved_reg_email']) ? htmlspecialchars($_SESSION['saved_reg_email']) : ''; ?>">
                     <label for="newPass">Пароль</label>
-                    <input name="newPass">
+                    <input type="password" name="newPass">
+                    <label for="confirm">Подтвердите пароль</label>
+                    <input type="password" name="confirm">
                     <input type="submit" value="Зарегистрироваться" class="submitBtn">
                 </form>
 
                 <div class="closeAuthRegBtn"></div>
             </div>
-         </div>
-        
-        <!-- Окно скидки -->
-        <?php if(!isset($_SESSION['isAuth']) || !$_SESSION['isAuth']): ?>
-            <div class="requestBlock">
-                <div class="requestWindow">
-                    <div class="contentLeft"></div>
-                    <div class="contentRight">
-                        <div class="closeRequestWindowBtn"></div>
-                        <h1>Зарегистрируйтесь, чтобы получить скидку!</h1>
-                        <div class="authRegBtn">Войти</div>
+        </div>
 
-                        <div class="discountBlock">
-                            <button class="getCodeBtn">Получить код на скидку</button>
-                            <div class="discountCode"></div>
-                        </div>
-                    </div>
-                   
-                </div>
+        <!-- Окно профиля -->
+        <?php if(isset($_SESSION['isAuth']) && $_SESSION['isAuth']): ?>
+            <div class="profileBlock">
+                <h1>Ваши данные:</h1>
+                <p>Логин: <?php echo $user['login'] ?></p>
+                <p>Почта: <?php echo $user['email'] ?></p>
+                <p>Роль: <?php echo $user['role'] ?></p>
+                <div class="headerBtn" id="logout"><p>Выйти</p></div>
+                <div class="closeProfileBlockBtn"></div>
             </div>
         <?php endif; ?>
 
+        <!-- Окно создания новости -->
         <div class="createNewBlock">
             <div class="createNewWindow">
                 <form action="create_new.php" method="POST" enctype="multipart/form-data">
@@ -163,7 +178,9 @@
                 <div class="headerBtn" id="toFooter"><p>Ссылки</p></div>
 
                 <?php if(isset($_SESSION['isAuth']) && $_SESSION['isAuth']): ?>
-                    <div class="headerBtn" id="logout"><p>Выйти</p></div>
+                    <div class="headerBtn" id="profile"><p>Профиль</p></div>
+                    
+                    <!-- <div class="headerBtn" id="logout"><p>Выйти</p></div> -->
                 <?php else: ?>  
                     <div class="headerBtn" id="auth"><p>Войти</p></div>  
                 <?php endif; ?>  
@@ -179,7 +196,14 @@
                 <div class="headerBtnMobile" id="toAboutMob"><p>Об игре</p></div>
                 <div class="headerBtnMobile" id="toCharMob"><p>Персонажи</p></div>
                 <div class="headerBtnMobile" id="toMediaMob"><p>Медиа</p></div>
+                <div class="headerBtnMobile" id="toNewsMob"><p>Новости</p></div>
                 <div class="headerBtnMobile" id="toFooterMob"><p>Ссылки</p></div>
+
+                <?php if(isset($_SESSION['isAuth']) && $_SESSION['isAuth']): ?>
+                    <div class="headerBtnMobile" id="logoutMob"><p>Выйти</p></div>
+                <?php else: ?>  
+                    <div class="headerBtnMobile" id="authMob"><p>Войти</p></div>  
+                <?php endif; ?> 
             </div>
         </div>
 
@@ -261,6 +285,7 @@
                 </div>
             </div>
         </div>
+
         <!-- Персонажи -->
         <div class="characters" id="charBlock">
             <div class="abbreviation">
@@ -366,6 +391,8 @@
                     </div>
             </div>
         </div>
+
+        <!-- Блок медиа -->
         <div class="media" id="mediaBlock">
             <div class="blackFilter">
                 <div class="abbreviation">
@@ -394,6 +421,8 @@
                 </div>
             </div>
         </div>
+
+        <!-- Блок новостей -->
         <div class="news" id="newsBlock">
             <div class="abbreviation">
                 <p>Новости</p>
@@ -434,6 +463,8 @@
             <div class="openCreateNewBlock">Создать новость</div>
         <?php endif; ?>
         </div>
+
+        <!-- Футер -->
         <div class="footer" id="footer">
             <div class="footerLogo">
                 <a href="https://www.thebehemoth.com/"><img src="./images/Фото слева.png" alt=""></a>
@@ -466,11 +497,6 @@
             </div>
         </div>
     </div>
-
-
-
-
-
 
     <script src="script.js"></script>
 </body>

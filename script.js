@@ -1,5 +1,4 @@
 //Переходы к блокам по кнопкам в хедере
-
 let toAbout = document.getElementById('toAbout');
 let toChar = document.getElementById('toChar');
 let toMedia = document.getElementById('toMedia');
@@ -48,6 +47,7 @@ toFooter.addEventListener('click', () => {
 });
 
 
+
 // Показ блока с авторизацией/регистрацией по нажатию кнопки
     let authBtn = document.getElementById('auth');
     let authRegBlock = document.querySelector('.authRegBlock');
@@ -59,14 +59,44 @@ toFooter.addEventListener('click', () => {
         });
     }
 
-// Показ блока с авторизацией/регистрацией в блоке с предложением скидки
-    let authRegBtn = document.querySelector('.authRegBtn');
 
-    if(authRegBtn){
-        authRegBtn.addEventListener('click', function(){
+
+// Показ блока с авторизацией/регистрацией на мобиле
+    let authBtnMob = document.getElementById('authMob');
+
+    if(authBtnMob){
+        authBtnMob.addEventListener('click', function(){
+            authRegBlock.style.display = 'flex';
             authRegBlock.classList.add('authRegBlockActive');
         });
     }
+
+
+
+// Закрытие меню-бургера при клике вне его области
+    document.addEventListener('click', function(e) {
+        let menuBurger = document.querySelector('.menuBurger');
+        let headerButtonsMobile = document.querySelector('.headerButtonsMobile');
+
+        if (headerButtonsMobile && headerButtonsMobile.classList.contains('show')) {
+            const isClickInsideMenu = headerButtonsMobile.contains(event.target);
+
+            if (!isClickInsideMenu) {
+                headerButtonsMobile.classList.remove('show');
+            }
+        }
+    });
+
+
+
+// // Показ блока с авторизацией/регистрацией в блоке с предложением скидки
+//     let authRegBtn = document.querySelector('.authRegBtn');
+
+//     if(authRegBtn){
+//         authRegBtn.addEventListener('click', function(){
+//             authRegBlock.classList.add('authRegBlockActive');
+//         });
+//     }
 
 
 
@@ -79,6 +109,37 @@ toFooter.addEventListener('click', () => {
         });
     }
 
+// Открытие профиля по нажатию кнопки
+    let profileBtn = document.getElementById('profile');
+    let profileBlock = document.querySelector('.profileBlock');
+
+    if(profileBtn){
+        profileBtn.addEventListener('click', function(){
+            profileBlock.classList.add('activeProfile');
+        });
+    }
+
+
+    document.addEventListener('click', function(event) {
+        if (profileBlock && profileBlock.classList.contains('activeProfile')) {
+            // Проверяем, был ли клик НЕ по кнопке профиля и НЕ внутри блока профиля
+            const isClickOnProfileBtn = profileBtn && profileBtn.contains(event.target);
+            const isClickInsideProfile = profileBlock.contains(event.target);
+        
+            // Если клик не по кнопке профиля и не внутри блока профиля - закрываем
+            if (!isClickOnProfileBtn && !isClickInsideProfile) {
+                profileBlock.classList.remove('activeProfile');
+            } 
+        }
+    });
+
+    let closeProfileBlockBtn = document.querySelector('.closeProfileBlockBtn');
+
+    if(closeProfileBlockBtn){
+        closeProfileBlockBtn.addEventListener('click', function(){
+            profileBlock.classList.remove('activeProfile');
+        });
+    }
 
 
 // Закрытие блока с авторизацией/регистрацией
@@ -89,6 +150,8 @@ toFooter.addEventListener('click', () => {
             authRegBlock.classList.remove('authRegBlockActive');
         }
     });
+
+
 
 // Закрытие окна создания новостей
     let closeCreateNewBlockBtn = document.querySelector('.closeCreateNewBlockBtn');
@@ -101,8 +164,6 @@ toFooter.addEventListener('click', () => {
 
 
 
-
-
 // Показ блока с предложением скидки через 60 секунд для неавторизованных пользователей
     // let requestBlock = document.querySelector('.requestBlock');
     // let closeRequestWindowBtn = document.querySelector('.closeRequestWindowBtn');
@@ -110,9 +171,9 @@ toFooter.addEventListener('click', () => {
     // if(requestBlock){
     //     let timer = setTimeout(function() {
     //         requestBlock.classList.add('requestBlockActive');
+    //         showDiscountCode();
     //     }, 1000);
 
-    //     let closeRequestWindowBtn = document.querySelector('.closeRequestWindowBtn');
     //     if(closeRequestWindowBtn){
     //         closeRequestWindowBtn.addEventListener('click', function(){
     //             requestBlock.classList.remove('requestBlockActive');
@@ -121,9 +182,33 @@ toFooter.addEventListener('click', () => {
     //     }
     // }
 
+    
 
-//Показ блока создания новостей для админа\
+let backToTopBtn = document.querySelector('.backToTopBtn');
 
+function toggleBackToTopBtn(){
+    if (window.scrollY > 300) {
+        backToTopBtn.classList.add('visible');
+    } else {
+        backToTopBtn.classList.remove('visible');
+    }
+}
+
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
+if (backToTopBtn) {
+    window.addEventListener('scroll', toggleBackToTopBtn);
+    backToTopBtn.addEventListener('click', scrollToTop);
+
+    toggleBackToTopBtn()
+}
+
+//Показ блока создания новостей для админа
 let createNewBlock = document.querySelector('.createNewBlock');
 let openCreateNewBlock = document.querySelector('.openCreateNewBlock');
 
@@ -140,6 +225,7 @@ if(openCreateNewBlock){
 let toAboutMob = document.getElementById('toAboutMob');
 let toCharMob = document.getElementById('toCharMob');
 let toMediaMob = document.getElementById('toMediaMob');
+let toNewsMob = document.getElementById('toNewsMob');
 let toFooterMob = document.getElementById('toFooterMob');
 
 toAboutMob.addEventListener('click', () => {
@@ -161,6 +247,13 @@ toMediaMob.addEventListener('click', () => {
         behavior: 'smooth',
         block: 'start'
     });
+});
+
+toNewsMob.addEventListener('click', () => {
+    newsBlock.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+    });9
 });
 
 toFooterMob.addEventListener('click', () => {
@@ -362,70 +455,52 @@ function isElementInViewport(elem) {
 }
 
 
-// // Автоматическое исчезновение уведомления через 5 секунд
-// document.addEventListener('DOMContentLoaded', function() {
-//     const notification = document.querySelector('.notification');
-//     if (notification) {
-//         setTimeout(() => {
-//             if (notification && !notification.classList.contains('hide')) {
-//                 closeNotification();
-//             }
-//         }, 5000);
-//     }
-// });
-
-// let logoutBtn = document.getElementById('logout');
-
-// logoutBtn.addEventListener('click', function() {
-//     window.location.href = 'logout.php';
-// });
-
-
-
-
-
-
 
 // Функция для обработки прокрутки
-// function handleScroll() {
-//     const header = document.querySelector('.header');
-//     const mainScreen = document.querySelector('.mainScreen');
-//     const about = document.querySelector('.about'); 
-//     const characters = document.querySelector('.characters');
-//     const media = document.querySelector('.media');
-//     const footer = document.querySelector('.footer');
+function handleScroll() {
+    let header = document.querySelector('.header');
+    let mainScreen = document.querySelector('.mainScreen');
+    let about = document.querySelector('.about'); 
+    let characters = document.querySelector('.characters');
+    let media = document.querySelector('.media');
+    let news = document.querySelector('.news');
+    let footer = document.querySelector('.footer');
 
-//     if(isElementInViewport(header)){
-//         header.classList.add('visible');
-//     }
+    if(isElementInViewport(header)){
+        header.classList.add('visible');
+    }
 
-//     if (isElementInViewport(mainScreen)) {
-//         mainScreen.classList.add('visible');
-//     }
+    if (isElementInViewport(mainScreen)) {
+        mainScreen.classList.add('visible');
+    }
 
-//     if (isElementInViewport(about)) {
-//         about.classList.add('visible');
-//     }    
+    if (isElementInViewport(about)) {
+        about.classList.add('visible');
+    }    
     
-//     if (isElementInViewport(characters)) {
-//         characters.classList.add('visible');
-//     }
+    if (isElementInViewport(characters)) {
+        characters.classList.add('visible');
+    }
 
-//     if (isElementInViewport(media)) {
-//         media.classList.add('visible');
-//     }
+    if (isElementInViewport(media)) {
+        media.classList.add('visible');
+    }
 
-//     if (isElementInViewport(footer)) {
-//         footer.classList.add('visible');
-//     }
+    if (isElementInViewport(news)) {
+        news.classList.add('visible');
+    }
+
+    if (isElementInViewport(footer)) {
+        footer.classList.add('visible');
+    }
     
-// }
+}
 
 // Добавляем обработчик события прокрутки
-// window.addEventListener('scroll', handleScroll);
+window.addEventListener('scroll', handleScroll);
 
 // Также проверяем при загрузке страницы (на случай если элемент уже в viewport)
-// window.addEventListener('load', handleScroll);
+window.addEventListener('load', handleScroll);
 
 
 
@@ -443,12 +518,26 @@ function generateCode(){
 
 console.log(generateCode());
 
-let getCodeBtn = document.querySelector('.getCodeBtn');
-let discountBlock = document.querySelector('.discountCode');
-
-if(getCodeBtn){
-    getCodeBtn.addEventListener('click', () => {
-        code = generateCode();
-        discountBlock.textContent = code;
-    });
+function showDiscountCode(){
+    let discountCodeBlock = document.querySelector('.discountCode');
+    if(discountCodeBlock){
+        let code = generateCode();
+        discountCodeBlock.textContent = code;
+        discountCodeBlock.style.fontSize = '30px';
+        discountCodeBlock.style.fontWeight = 'bold';
+        discountCodeBlock.style.fontFamily = 'PressStart2P';
+        discountCodeBlock.style.marginTop = '30px';
+        discountCodeBlock.style.textAlign = 'center';
+    }
 }
+
+// let getCodeBtn = document.querySelector('.getCodeBtn');
+// let discountBlock = document.querySelector('.discountCode');
+
+// if(getCodeBtn){
+//     getCodeBtn.addEventListener('click', () => {
+//         code = generateCode();
+//         discountBlock.textContent = code;
+//     });
+// }
+

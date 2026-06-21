@@ -30,7 +30,8 @@
         $query = "INSERT INTO `news`(`header`, `content`, `image_path`, `created_at`) VALUES ('$newsHeaderText', '$newsText', '$imagePath', NOW())";
         $createNew = mysqli_query($link, $query);
 
-        header('Location: index.php');
+        $scrollPosition = isset($_POST['scroll_position']) ? (int)$_POST['scroll_position'] : 0;
+        header('Location: index.php?scroll=' . $scrollPosition);
         exit();
     }
 
