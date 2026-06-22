@@ -148,7 +148,7 @@
         <!-- Окно создания новости -->
         <div class="createNewBlock">
             <div class="createNewWindow">
-                <form action="create_new.php" method="POST" enctype="multipart/form-data">
+                <form id="createNewsForm" enctype="multipart/form-data">
                     <label for="headerText">Заголовок новости:</label>
                     <input name="headerText" type="text" class="headerText">
 
@@ -158,9 +158,8 @@
                     <label for="newsImage">Изображение новости:</label>
                     <input name="newsImage" type="file" accept="image/*" class="addImageBtn">
 
-                    <input type="submit" value="Создать новость" class="createNewBtn">
+                    <button type="submit" class="createNewBtn">Создать новость</button>
                 </form>
-
                 <div class="closeCreateNewBlockBtn"></div>
             </div>
         </div>
@@ -423,46 +422,44 @@
         </div>
 
         <!-- Блок новостей -->
-        <div class="news" id="newsBlock">
-            <div class="abbreviation">
-                <p>Новости</p>
-            </div>
-            <div class="newsContainer"> 
-                <?php 
-                    $getNews = "SELECT * FROM `news` ORDER BY `created_at` DESC";
-                    $getNewsQuery = mysqli_query($link, $getNews);
+<div class="news" id="newsBlock">
+    <div class="abbreviation">
+        <p>Новости</p>
+    </div>
+    <div class="newsContainer" data-is-admin="<?php echo isset($_SESSION['isAuth']) && $_SESSION['user_role'] == 'admin' ? 'true' : 'false'; ?>"> 
+        <?php 
+            $getNews = "SELECT * FROM `news` ORDER BY `created_at` DESC";
+            $getNewsQuery = mysqli_query($link, $getNews);
 
-                    if(mysqli_num_rows($getNewsQuery) > 0){
-                        while($news = mysqli_fetch_assoc($getNewsQuery)){
-                            echo '<div class = "new" data-id="' . $news['id'] . '" >';
-                            
-                            // echo '<p>' . $news['id'] . '</p>' . '<br>';
-                            echo '<div class = "newsImage">';
-                            if(!empty($news['image_path']) && file_exists($news['image_path'])){
-                                echo '<img src="' . htmlspecialchars($news['image_path']) . '" alt="News image">';
-                            } else {
-                                echo '<div class="no-image">Нет изображения</div>';
-                            }
-                            echo '</div>';
-
-                            echo '<div class = "newsHeader">' . '<h1>' . $news['header'] . '</h1>' . '</div>';
-                            echo '<div class = "newsText">' . '<p>' . $news['content'] . '</p>' . '</div>';
-
-                            // onclick="return confirm(\'Удалить новость?\')
-                            if(isset($_SESSION['isAuth']) && $_SESSION['user_role'] == 'admin'){
-                                echo '<a href="delete_new.php?id=' . $news['id'] . '" class="deleteNewBtn" ">Удалить</a>';
-                            }
-                            echo '</div>';
-                        }
+            if(mysqli_num_rows($getNewsQuery) > 0){
+                while($news = mysqli_fetch_assoc($getNewsQuery)){
+                    echo '<div class = "new" data-id="' . $news['id'] . '" >';
+                    
+                    echo '<div class = "newsImage">';
+                    if(!empty($news['image_path']) && file_exists($news['image_path'])){
+                        echo '<img src="' . htmlspecialchars($news['image_path']) . '" alt="News image">';
                     } else {
-                        echo '<p style="color: white;">Новостей пока нет</p>';
-                    }                    
-                ?>
-            </div>
-        <?php if(isset($_SESSION['isAuth']) && $_SESSION['user_role'] == 'admin') : ?>
-            <div class="openCreateNewBlock">Создать новость</div>
-        <?php endif; ?>
-        </div>
+                        echo '<div class="no-image">Нет изображения</div>';
+                    }
+                    echo '</div>';
+
+                    echo '<div class = "newsHeader">' . '<h1>' . $news['header'] . '</h1>' . '</div>';
+                    echo '<div class = "newsText">' . '<p>' . $news['content'] . '</p>' . '</div>';
+
+                    if(isset($_SESSION['isAuth']) && $_SESSION['user_role'] == 'admin'){
+                        echo '<button class="deleteNewBtn" data-id="' . $news['id'] . '">Удалить</button>';
+                    }
+                    echo '</div>';
+                }
+            } else {
+                echo '<p style="color: white;">Новостей пока нет</p>';
+            }                    
+        ?>
+    </div>
+<?php if(isset($_SESSION['isAuth']) && $_SESSION['user_role'] == 'admin') : ?>
+    <div class="openCreateNewBlock">Создать новость</div>
+<?php endif; ?>
+</div>
 
         <!-- Футер -->
         <div class="footer" id="footer">
@@ -498,6 +495,14 @@
         </div>
     </div>
 
+
+    <script>
+    // Передаем данные из PHP в JavaScript
+    const userData = {
+        isAuth: <?php echo isset($_SESSION['isAuth']) && $_SESSION['isAuth'] ? 'true' : 'false'; ?>,
+        isAdmin: <?php echo isset($_SESSION['isAuth']) && $_SESSION['user_role'] == 'admin' ? 'true' : 'false'; ?>
+    };
+    </script>
     <script src="script.js"></script>
 </body>
 </html>

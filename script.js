@@ -541,3 +541,75 @@ function showDiscountCode(){
 //     });
 // }
 
+
+// AJAX создание новости
+const createForm = document.getElementById('createNewsForm');
+if(createForm){
+    createForm.addEventListener('submit', function(e){
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        
+        fetch('ajax_create.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(news => {
+            let imageHtml = '';
+            if(news.image_path){
+                imageHtml = `<img src="${news.image_path}" alt="News image">`;
+            } else {
+                imageHtml = '<div class="no-image">Нет изображения</div>';
+            }
+            
+            // Проверяем атрибут у контейнера
+            const container = document.querySelector('.newsContainer');
+            const isAdmin = container.dataset.isAdmin === 'true';
+            
+            let deleteBtnHtml = '';
+            if (isAdmin) {
+                deleteBtnHtml = `<button class="deleteNewBtn" data-id="${news.id}">Удалить</button>`;
+            }
+            
+            const newsHtml = `
+                <div class="new" data-id="${news.id}">
+                    <div class="newsImage">${imageHtml}</div>
+                    <div class="newsHeader"><h1>${news.header}</h1></div>
+                    <div class="newsText"><p>${news.content}</p></div>
+                    ${deleteBtnHtml}
+                </div>
+            `;
+            
+            const noNews = container.querySelector('p');
+            if(noNews && noNews.textContent === 'Новостей пока нет'){
+                noNews.remove();
+            }
+            container.insertAdjacentHTML('afterbegin', newsHtml);
+            
+            document.querySelector('.createNewBlock').classList.remove('createNewBlockActive');
+            createForm.reset();
+        });
+    });
+}
+
+// AJAX удаление новости
+document.addEventListener('click', function(e){
+    if(e.target.classList.contains('deleteNewBtn')){
+        const newsId = e.target.dataset.id;
+        const newsElement = e.target.closest('.new');
+        
+        if(confirm('Удалить новость?')){
+            fetch('ajax_delete.php?id=' + newsId)
+            .then(response => response.json())
+            .then(() => {
+                newsElement.remove();
+                // Если новостей не осталось
+                const container = document.querySelector('.newsContainer');
+                if(container.children.length === 0){
+                    container.innerHTML = '<p style="color: white; width: 100%; text-align: center;">Новостей пока нет</p>';
+                }
+            });
+        }
+    }
+});
