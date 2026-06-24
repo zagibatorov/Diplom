@@ -3320,6 +3320,12 @@ body{
         margin-top: 30px;
         z-index: 100;
         background-color: rgb(255, 219, 56, 1);
+        transition: 0.5s all ease;
+        opacity: 1;
+    }
+
+    .messageBlock.hide {
+        opacity: 0;
     }
 
     .backToTopBtn{

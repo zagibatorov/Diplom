@@ -141,6 +141,35 @@ toFooter.addEventListener('click', () => {
         });
     }
 
+// Автоматическое исчезновение блока сообщений через 3 секунды
+function autoHideMessages() {
+    const messageBlock = document.querySelector('.messageBlock');
+    if (messageBlock) {
+        // Через 3 секунды добавляем класс для исчезновения
+        setTimeout(() => {
+            messageBlock.classList.add('hide');
+            
+            // После завершения анимации скрываем блок полностью
+            setTimeout(() => {
+                messageBlock.style.display = 'none';
+            }, 500);
+        }, 3000);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const messageBlock = document.querySelector('.messageBlock');
+    if (messageBlock) {
+        const messages = messageBlock.querySelectorAll('p');
+        if (messages.length > 0) {
+            autoHideMessages();
+        } else {
+            messageBlock.style.display = 'none';
+        }
+    }
+});
+
+
 
 // Закрытие блока с авторизацией/регистрацией
     let closeAuthRegBtn = document.querySelector('.closeAuthRegBtn');

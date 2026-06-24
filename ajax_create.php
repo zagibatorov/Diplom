@@ -26,15 +26,12 @@ if(!empty($_POST['blockText']) && !empty($_POST['headerText'])){
     $query = "INSERT INTO `news`(`header`, `content`, `image_path`, `created_at`) VALUES ('$newsHeaderText', '$newsText', '$imagePath', NOW())";
     mysqli_query($link, $query);
     
-    // Получаем ID последней созданной новости
     $newsId = mysqli_insert_id($link);
     
-    // Получаем созданную новость
     $getNews = "SELECT * FROM `news` WHERE `id` = $newsId";
     $result = mysqli_query($link, $getNews);
     $news = mysqli_fetch_assoc($result);
     
-    // Возвращаем JSON с данными новости
     echo json_encode($news);
 }
 ?>

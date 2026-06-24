@@ -6,8 +6,4 @@
 
     $link = mysqli_connect($host, $user, $pass, $name);
 
-    // if($link){
-    //     echo 'Успех';
-    // }
-
 ?>
