@@ -89,14 +89,63 @@ toFooter.addEventListener('click', () => {
 
 
 
-// // Показ блока с авторизацией/регистрацией в блоке с предложением скидки
-//     let authRegBtn = document.querySelector('.authRegBtn');
+// Показ блока с предложением скидки через 60 секунд для неавторизованных пользователей
+    // let requestBlock = document.querySelector('.requestBlock');
+    // let closeRequestWindowBtn = document.querySelector('.closeRequestWindowBtn');
 
-//     if(authRegBtn){
-//         authRegBtn.addEventListener('click', function(){
-//             authRegBlock.classList.add('authRegBlockActive');
-//         });
-//     }
+    // if(requestBlock){
+    //     let timer = setTimeout(function() {
+    //         requestBlock.classList.add('requestBlockActive');
+    //     }, 1000);
+
+    //     if(closeRequestWindowBtn){
+    //         closeRequestWindowBtn.addEventListener('click', function(){
+    //             requestBlock.classList.remove('requestBlockActive');
+    //             clearTimeout(timer);
+    //         });
+    //     }
+    // }
+
+// Показ блока с авторизацией/регистрацией в блоке с предложением скидки
+    let authRegBtn = document.querySelector('.authRegBtn');
+
+    if(authRegBtn){
+        authRegBtn.addEventListener('click', function(){
+            authRegBlock.classList.add('authRegBlockActive');
+        });
+    }
+
+// Генератор кода для скидки
+function generateCode(){
+    let code = [];
+
+    for(let i = 0; i < 6; i++){
+        code.push(Math.floor(Math.random() * 10));
+    }
+
+    return code.join('');
+}
+
+// Генерация и вывод скидки по нажатию кнопки
+let getCodeBtn = document.querySelector('.getCodeBtn');
+let discountBlock = document.querySelector('.discountCode');
+
+if(getCodeBtn){
+    getCodeBtn.addEventListener('click', function(){
+        let code = generateCode();
+        discountBlock.textContent = code;
+        discountBlock.style.color = 'white';
+        discountBlock.style.fontSize = '30px';
+        discountBlock.style.fontWeight = 'bold';
+        discountBlock.style.fontFamily = 'PressStart2P';
+        discountBlock.style.textAlign = 'center';
+        discountBlock.style.backgroundColor = '#6A9EFF';
+        discountBlock.style.padding = '10px 20px';
+        discountBlock.style.borderRadius = '10px';
+        discountBlock.style.border = '3px solid white';
+        discountBlock.classList.add('show');
+    });
+}
 
 
 
@@ -109,6 +158,8 @@ toFooter.addEventListener('click', () => {
         });
     }
 
+
+
 // Открытие профиля по нажатию кнопки
     let profileBtn = document.getElementById('profile');
     let profileBlock = document.querySelector('.profileBlock');
@@ -118,7 +169,6 @@ toFooter.addEventListener('click', () => {
             profileBlock.classList.add('activeProfile');
         });
     }
-
 
     document.addEventListener('click', function(event) {
         if (profileBlock && profileBlock.classList.contains('activeProfile')) {
@@ -140,6 +190,8 @@ toFooter.addEventListener('click', () => {
             profileBlock.classList.remove('activeProfile');
         });
     }
+
+
 
 // Автоматическое исчезновение блока сообщений через 3 секунды
 function autoHideMessages() {
@@ -193,26 +245,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-// Показ блока с предложением скидки через 60 секунд для неавторизованных пользователей
-    // let requestBlock = document.querySelector('.requestBlock');
-    // let closeRequestWindowBtn = document.querySelector('.closeRequestWindowBtn');
-
-    // if(requestBlock){
-    //     let timer = setTimeout(function() {
-    //         requestBlock.classList.add('requestBlockActive');
-    //         showDiscountCode();
-    //     }, 1000);
-
-    //     if(closeRequestWindowBtn){
-    //         closeRequestWindowBtn.addEventListener('click', function(){
-    //             requestBlock.classList.remove('requestBlockActive');
-    //             clearTimeout(timer);
-    //         });
-    //     }
-    // }
-
-    
-
+// Появление кнопки вернуться наверх при скролле
 let backToTopBtn = document.querySelector('.backToTopBtn');
 
 function toggleBackToTopBtn(){
@@ -236,6 +269,8 @@ if (backToTopBtn) {
 
     toggleBackToTopBtn()
 }
+
+
 
 //Показ блока создания новостей для админа
 let createNewBlock = document.querySelector('.createNewBlock');
@@ -533,44 +568,6 @@ window.addEventListener('load', handleScroll);
 
 
 
-// Генератор кода для скидки
-
-function generateCode(){
-    let code = [];
-
-    for(let i = 0; i < 6; i++){
-        code.push(Math.floor(Math.random() * 10));
-    }
-
-    return code.join('');
-}
-
-console.log(generateCode());
-
-function showDiscountCode(){
-    let discountCodeBlock = document.querySelector('.discountCode');
-    if(discountCodeBlock){
-        let code = generateCode();
-        discountCodeBlock.textContent = code;
-        discountCodeBlock.style.fontSize = '30px';
-        discountCodeBlock.style.fontWeight = 'bold';
-        discountCodeBlock.style.fontFamily = 'PressStart2P';
-        discountCodeBlock.style.marginTop = '30px';
-        discountCodeBlock.style.textAlign = 'center';
-    }
-}
-
-// let getCodeBtn = document.querySelector('.getCodeBtn');
-// let discountBlock = document.querySelector('.discountCode');
-
-// if(getCodeBtn){
-//     getCodeBtn.addEventListener('click', () => {
-//         code = generateCode();
-//         discountBlock.textContent = code;
-//     });
-// }
-
-
 // AJAX создание новости
 const createForm = document.getElementById('createNewsForm');
 if(createForm){
@@ -592,12 +589,13 @@ if(createForm){
                 imageHtml = '<div class="no-image">Нет изображения</div>';
             }
             
-            // Проверяем атрибут у контейнера
             const container = document.querySelector('.newsContainer');
             const isAdmin = container.dataset.isAdmin === 'true';
             
+            let changeBtnHtml = '';
             let deleteBtnHtml = '';
             if (isAdmin) {
+                changeBtnHtml = `<button class="changeNewBtn" data-id="${news.id}">Изменить</button>`;
                 deleteBtnHtml = `<button class="deleteNewBtn" data-id="${news.id}">Удалить</button>`;
             }
             
@@ -606,7 +604,7 @@ if(createForm){
                     <div class="newsImage">${imageHtml}</div>
                     <div class="newsHeader"><h1>${news.header}</h1></div>
                     <div class="newsText"><p>${news.content}</p></div>
-                    ${deleteBtnHtml}
+                    <div class="newsTools">${changeBtnHtml}${deleteBtnHtml}</div>
                 </div>
             `;
             
@@ -642,3 +640,81 @@ document.addEventListener('click', function(e){
         }
     }
 });
+
+// Открытие окна изменения новости
+document.addEventListener('click', function(e) {
+    if(e.target.classList.contains('changeNewBtn')) {
+        const newsId = e.target.dataset.id;
+        
+        fetch('ajax_change.php?id=' + newsId)
+        .then(response => response.json())
+        .then(news => {
+            document.getElementById('changeNewsId').value = news.id;
+            document.getElementById('changeHeaderText').value = news.header;
+            document.getElementById('changeBlockText').value = news.content;
+            
+            const previewContainer = document.getElementById('currentImagePreview');
+            if(news.image_path) {
+                previewContainer.innerHTML = `<p>Текущее изображение:</p><img src="${news.image_path}" alt="Current image" style="max-width:200px; max-height:200px; border: 3px solid white; border-radius: 10px;">`;
+            } else {
+                previewContainer.innerHTML = '<p>Изображение не загружено</p>';
+            }
+            
+            document.querySelector('.changeNewBlock').classList.add('changeNewBlockActive');
+        });
+    }
+});
+
+// Закрытие окна изменения новости
+let closeChangeNewBlockBtn = document.querySelector('.closeChangeNewBlockBtn');
+if(closeChangeNewBlockBtn){
+    closeChangeNewBlockBtn.addEventListener('click', function(){
+        document.querySelector('.changeNewBlock').classList.remove('changeNewBlockActive');
+    });
+}
+
+// AJAX изменение новости
+const changeForm = document.getElementById('changeNewsForm');
+if(changeForm){
+    changeForm.addEventListener('submit', function(e){
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        
+        fetch('ajax_change.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(news => {
+            const newsElement = document.querySelector(`.new[data-id="${news.id}"]`);
+            if(newsElement) {
+                let imageHtml = '';
+                if(news.image_path){
+                    imageHtml = `<img src="${news.image_path}" alt="News image">`;
+                } else {
+                    imageHtml = '<div class="no-image">Нет изображения</div>';
+                }
+                
+                const container = document.querySelector('.newsContainer');
+                const isAdmin = container.dataset.isAdmin === 'true';
+                
+                let changeBtnHtml = '';
+                let deleteBtnHtml = '';
+                if (isAdmin) {
+                    changeBtnHtml = `<button class="changeNewBtn" data-id="${news.id}">Изменить</button>`;
+                    deleteBtnHtml = `<button class="deleteNewBtn" data-id="${news.id}">Удалить</button>`;
+                }
+                
+                newsElement.innerHTML = `
+                    <div class="newsImage">${imageHtml}</div>
+                    <div class="newsHeader"><h1>${news.header}</h1></div>
+                    <div class="newsText"><p>${news.content}</p></div>
+                    <div class="newsTools">${changeBtnHtml}${deleteBtnHtml}</div>
+                `;
+            }
+            
+            document.querySelector('.changeNewBlock').classList.remove('changeNewBlockActive');
+        });
+    });
+}
